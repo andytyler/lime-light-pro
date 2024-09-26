@@ -1,24 +1,24 @@
-import { spawn } from "child_process";
-import svelte from "rollup-plugin-svelte";
 import commonjs from "@rollup/plugin-commonjs";
-import terser from "@rollup/plugin-terser";
 import resolve from "@rollup/plugin-node-resolve";
-import livereload from "rollup-plugin-livereload";
+import terser from "@rollup/plugin-terser";
+import { spawn } from "child_process";
+import fs from "fs-extra";
 import css from "rollup-plugin-css-only";
-import sveltePreprocess from "svelte-preprocess";
-import typescript from "rollup-plugin-typescript2";
+import livereload from "rollup-plugin-livereload";
 import postcss from "rollup-plugin-postcss";
-import fs from 'fs-extra';
+import svelte from "rollup-plugin-svelte";
+import typescript from "rollup-plugin-typescript2";
+import sveltePreprocess from "svelte-preprocess";
 
 const copyFilePlugin = (sourceDir, targetDir) => {
 	return {
-		name: 'copy-file',
+		name: "copy-file",
 		buildStart() {
-			fs.copy(sourceDir, targetDir, { overwrite: true }, err => {
+			fs.copy(sourceDir, targetDir, { overwrite: true }, (err) => {
 				if (err) return console.error(err);
 				console.log(`${sourceDir} copied successfully!`);
 			});
-		}
+		},
 	};
 };
 
@@ -54,12 +54,7 @@ export default [
 			name: "app",
 			file: "public/build/background.js",
 		},
-		plugins: [
-			typescript({ sourceMap: false }),
-			resolve(),
-			commonjs(),
-			production && terser(),
-		],
+		plugins: [typescript({ sourceMap: false }), resolve(), commonjs(), production && terser()],
 		watch: {
 			clearScreen: false,
 		},
@@ -72,12 +67,7 @@ export default [
 			name: "app",
 			file: "public/build/content.js",
 		},
-		plugins: [
-			typescript({ sourceMap: false }),
-			resolve(),
-			commonjs(),
-			production && terser(),
-		],
+		plugins: [typescript({ sourceMap: false }), resolve(), commonjs(), production && terser()],
 		watch: {
 			clearScreen: false,
 		},
@@ -153,10 +143,10 @@ export default [
 			// If we're building for production (npm run build
 			// instead of npm run dev), minify
 			production && terser(),
-			copyFilePlugin('src/manifest.json', 'public/manifest.json'),
-			copyFilePlugin('src/icons', 'public/icons'),
-			copyFilePlugin('src/_locales', 'public/_locales'),
-			copyFilePlugin('src/index.html', 'public/index.html')
+			copyFilePlugin("src/manifest.json", "public/manifest.json"),
+			copyFilePlugin("src/icons", "public/icons"),
+			copyFilePlugin("src/_locales", "public/_locales"),
+			copyFilePlugin("src/index.html", "public/index.html"),
 		],
 		watch: {
 			clearScreen: false,
